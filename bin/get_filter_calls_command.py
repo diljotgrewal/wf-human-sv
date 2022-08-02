@@ -101,6 +101,8 @@ def main():
     # Get SV type filters
     sv_type_filters: list[str] = []
     for svtype in args.sv_types:
+        if svtype == 'BND':
+            continue
         sv_type_filters.append(f'SVTYPE = \"{svtype}\"')
     filter_sv_types = f"( {(' || ').join(sv_type_filters)} )"
 
@@ -128,7 +130,12 @@ def main():
         filter_max_len,
         filter_min_read_support
     ]
-    filter_string = f"-i '{' && '.join(filters)}'"
+    filter_string = ' && '.join(filters)
+
+    if 'BND' in args.sv_types:
+        filter_string = f'({filter_string})||(SVTYPE = "BND" && INFO/SUPPORT >= {min_read_support})'
+
+    filter_string = f"-i '{filter_string}'"
 
     # Add target_bed filter (optional)
     if args.target_bedfile:
