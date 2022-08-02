@@ -202,6 +202,7 @@ def main():
         vcf_df = expand_column(vcf_df)
         vcf_df = vcf_df.drop('RNAMES', 1)
         vcf_df['CHROM'] = vcf_df['CHROM'].astype(str)
+        vcf_df['SVLEN'] = vcf_df['SVLEN'].apply(lambda x: -1 if x == '' else x)
         vcf_df['SVLEN'] = vcf_df['SVLEN'].astype(int)
         vcf_df['CHROM'] = vcf_df['CHROM'].str.replace('chr', '')
         vcf_df = vcf_df.loc[vcf_df['CHROM'].isin(chroms_37)]
