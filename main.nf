@@ -155,7 +155,7 @@ process sortVCF {
     script:
         def name = vcf.simpleName
     """
-    vcfsort $vcf > ${name}.sorted.vcf
+    vcf-sort $vcf > ${name}.sorted.vcf
     """
 }
 
